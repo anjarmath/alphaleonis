@@ -6,15 +6,53 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
-model Post {
+model Profile {
+    id          Int      @id @default(autoincrement())
+    greeting    String
+    descTitle   String
+    descContent String
+    email       String
+    image       String
+    resume      String
+    mood        String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Portfolio {
+    id          Int      @id @default(autoincrement())
+    description String
+    brief       String
+    url         String?
+    githubUrl   String?
+    image       String?
+    visible     Boolean  @default(true)
+    tag         String[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Experience {
     id        Int      @id @default(autoincrement())
-    name      String
+    index     Int      @default(0)
+    company   String
+    title     String
+    period    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
 
-    @@index([name])
+model Certificate {
+    id        Int      @id @default(autoincrement())
+    title     String
+    issuer    String
+    image     String
+    period    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
