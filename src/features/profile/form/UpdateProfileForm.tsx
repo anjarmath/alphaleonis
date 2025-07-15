@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import Image from "next/image";
 
 const UpdateProfileForm = ({
   defaultValues,
@@ -161,6 +162,15 @@ const UpdateProfileForm = ({
           )}
         />
 
+        {defaultValues.image && defaultValues.image !== "#" && (
+          <Image
+            src={defaultValues.image}
+            alt="Profile Image"
+            width={200}
+            height={200}
+          />
+        )}
+
         <FormField
           control={form.control}
           name="resume"
@@ -178,6 +188,19 @@ const UpdateProfileForm = ({
             </FormItem>
           )}
         />
+
+        {defaultValues.resume && (
+          <div>
+            <a
+              className="text-primary underline"
+              href={defaultValues.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Resume
+            </a>
+          </div>
+        )}
 
         <Button type="submit" disabled={updateProfile.isPending}>
           Update <Check />
