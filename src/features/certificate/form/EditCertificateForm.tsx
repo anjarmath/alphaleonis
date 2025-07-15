@@ -20,44 +20,64 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { experienceSchema, type ExperienceSchematype } from "../schema";
-import { Textarea } from "@/components/ui/textarea";
-import type { Experience } from "@prisma/client";
+import {
+  editCertificateSchema,
+  type EditCertificateSchemaType,
+} from "../schema";
+import type { Certificate } from "@prisma/client";
+import { fileToBase64 } from "@/lib/form-util";
 
-const AddExperienceForm = () => {
+const EditCertificateForm = ({
+  id,
+  defaultValues,
+}: {
+  id: number;
+  defaultValues: Partial<Certificate>;
+}) => {
   const util = api.useUtils();
   const [open, setOpen] = React.useState(false);
 
-  const form = useForm<ExperienceSchematype>({
-    resolver: zodResolver(experienceSchema),
+  const form = useForm<EditCertificateSchemaType>({
+    resolver: zodResolver(editCertificateSchema),
     defaultValues: {
-      index: 0,
-      company: "",
-      title: "",
-      description: "",
-      period: "",
+      title: defaultValues.title,
+      issuer: defaultValues.issuer,
+      image: undefined,
+      validation: defaultValues.validation ?? undefined,
+      period: defaultValues.period,
     },
   });
 
-  const addExperience = api.experience.add.useMutation({
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      console.log(base64);
+      form.setValue("image", base64);
+    }
+  };
+
+  const editCertificate = api.certificate.edit.useMutation({
     onError: (err) => {
       toast.error(err.message);
     },
     onSuccess: (data) => {
-      util.experience.get.setData(
+      util.certificate.get.setData(
         undefined,
-        (prev: Experience[] | undefined) => [...(prev ?? []), data],
+        (prev: Certificate[] | undefined) => [
+          ...(prev ?? []).map((item) => (item.id === data.id ? data : item)),
+        ],
       );
       setOpen(false);
-      toast.success("Experience berhasil ditambahkan");
+      toast.success("Certificate berhasil ditambahkan");
     },
   });
 
-  const handleSubmit = (data: ExperienceSchematype) => {
-    addExperience.mutate(data);
+  const handleSubmit = (data: EditCertificateSchemaType) => {
+    editCertificate.mutate({ data, id });
   };
 
   return (
@@ -69,47 +89,19 @@ const AddExperienceForm = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>
-          Tambahkan Experience <Plus />
+        <Button onClick={() => setOpen(true)} size="icon">
+          <Edit />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-svh w-3xl overflow-auto">
         <DialogHeader>
-          <DialogTitle>Tambahkan Experience</DialogTitle>
+          <DialogTitle>Edit Certificate</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
-            <FormField
-              control={form.control}
-              name="index"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Index</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Company</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="title"
@@ -126,12 +118,44 @@ const AddExperienceForm = () => {
 
             <FormField
               control={form.control}
-              name="description"
+              name="issuer"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Issuer</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="validation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Validation</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,9 +179,9 @@ const AddExperienceForm = () => {
             <Button
               type="submit"
               className="w-full"
-              disabled={addExperience.isPending}
+              disabled={editCertificate.isPending}
             >
-              {addExperience.isPending ? "Loading..." : "Tambah Experience"}
+              {editCertificate.isPending ? "Loading..." : "Edit Certificate"}
             </Button>
           </form>
         </Form>
@@ -166,4 +190,4 @@ const AddExperienceForm = () => {
   );
 };
 
-export default AddExperienceForm;
+export default EditCertificateForm;

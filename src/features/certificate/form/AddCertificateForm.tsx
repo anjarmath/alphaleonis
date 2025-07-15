@@ -23,41 +23,50 @@ import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { experienceSchema, type ExperienceSchematype } from "../schema";
-import { Textarea } from "@/components/ui/textarea";
-import type { Experience } from "@prisma/client";
+import { addCertificateSchema, type AddCertificateSchemaType } from "../schema";
+import type { Certificate } from "@prisma/client";
+import { fileToBase64 } from "@/lib/form-util";
 
-const AddExperienceForm = () => {
+const AddCertificateForm = () => {
   const util = api.useUtils();
   const [open, setOpen] = React.useState(false);
 
-  const form = useForm<ExperienceSchematype>({
-    resolver: zodResolver(experienceSchema),
+  const form = useForm<AddCertificateSchemaType>({
+    resolver: zodResolver(addCertificateSchema),
     defaultValues: {
-      index: 0,
-      company: "",
       title: "",
-      description: "",
+      issuer: "",
+      image: "",
+      validation: undefined,
       period: "",
     },
   });
 
-  const addExperience = api.experience.add.useMutation({
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      console.log(base64);
+      form.setValue("image", base64);
+    }
+  };
+
+  const addCertificate = api.certificate.add.useMutation({
     onError: (err) => {
       toast.error(err.message);
     },
     onSuccess: (data) => {
-      util.experience.get.setData(
+      util.certificate.get.setData(
         undefined,
-        (prev: Experience[] | undefined) => [...(prev ?? []), data],
+        (prev: Certificate[] | undefined) => [...(prev ?? []), data],
       );
       setOpen(false);
-      toast.success("Experience berhasil ditambahkan");
+      toast.success("Certificate berhasil ditambahkan");
     },
   });
 
-  const handleSubmit = (data: ExperienceSchematype) => {
-    addExperience.mutate(data);
+  const handleSubmit = (data: AddCertificateSchemaType) => {
+    addCertificate.mutate(data);
   };
 
   return (
@@ -70,46 +79,18 @@ const AddExperienceForm = () => {
     >
       <DialogTrigger asChild>
         <Button onClick={() => setOpen(true)}>
-          Tambahkan Experience <Plus />
+          Tambahkan Certificate <Plus />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-svh w-3xl overflow-auto">
         <DialogHeader>
-          <DialogTitle>Tambahkan Experience</DialogTitle>
+          <DialogTitle>Tambahkan Certificate</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
-            <FormField
-              control={form.control}
-              name="index"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Index</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Company</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="title"
@@ -126,12 +107,44 @@ const AddExperienceForm = () => {
 
             <FormField
               control={form.control}
-              name="description"
+              name="issuer"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Issuer</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="validation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Validation</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -155,9 +168,9 @@ const AddExperienceForm = () => {
             <Button
               type="submit"
               className="w-full"
-              disabled={addExperience.isPending}
+              disabled={addCertificate.isPending}
             >
-              {addExperience.isPending ? "Loading..." : "Tambah Experience"}
+              {addCertificate.isPending ? "Loading..." : "Tambah Certificate"}
             </Button>
           </form>
         </Form>
@@ -166,4 +179,4 @@ const AddExperienceForm = () => {
   );
 };
 
-export default AddExperienceForm;
+export default AddCertificateForm;
