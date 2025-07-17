@@ -37,7 +37,7 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    request.nextUrl.pathname !== "/login" &&
+    request.nextUrl.pathname !== "/" &&
     !excludedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
   ) {
     // no user, respond by redirecting the user to the login page
