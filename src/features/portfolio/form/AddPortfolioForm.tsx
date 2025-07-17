@@ -61,6 +61,7 @@ const AddPortfolioForm = () => {
         undefined,
         (prev: Portfolio[] | undefined) => [...(prev ?? []), data],
       );
+      form.reset();
 
       toast.success("Portfolio berhasil ditambahkan");
     },
