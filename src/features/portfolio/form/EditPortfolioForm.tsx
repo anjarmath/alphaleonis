@@ -25,24 +25,32 @@ import { Textarea } from "@/components/ui/textarea";
 import { Check, X } from "lucide-react";
 import Image from "next/image";
 
-const AddPortfolioForm = () => {
+const EditPortfolioForm = ({
+  id,
+  defaultValues,
+}: {
+  id: number;
+  defaultValues: Partial<Portfolio>;
+}) => {
   const util = api.useUtils();
 
   const form = useForm<PortfolioType>({
     resolver: zodResolver(portfolioSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      brief: "",
-      url: "#",
-      githubUrl: "#",
+      title: defaultValues.title ?? "",
+      description: defaultValues.description ?? "",
+      brief: defaultValues.brief ?? "",
+      url: defaultValues.url ?? "#",
+      githubUrl: defaultValues.githubUrl ?? "#",
       image: "",
-      visible: true,
-      tag: [],
+      visible: defaultValues.visible ?? true,
+      tag: defaultValues.tag ?? [],
     },
   });
 
-  const [preview, setPreview] = React.useState<string>();
+  const [preview, setPreview] = React.useState<string | null>(
+    defaultValues.image ?? null,
+  );
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -52,14 +60,16 @@ const AddPortfolioForm = () => {
     }
   };
 
-  const addPortfolio = api.portfolio.add.useMutation({
+  const editPortfolio = api.portfolio.edit.useMutation({
     onError: (err) => {
       toast.error(err.message);
     },
     onSuccess: (data) => {
       util.portfolio.getAll.setData(
         undefined,
-        (prev: Portfolio[] | undefined) => [...(prev ?? []), data],
+        (prev: Portfolio[] | undefined) => [
+          ...(prev ?? []).map((item) => (item.id === data.id ? data : item)),
+        ],
       );
 
       toast.success("Portfolio berhasil ditambahkan");
@@ -67,7 +77,7 @@ const AddPortfolioForm = () => {
   });
 
   const handleSubmit = (data: PortfolioType) => {
-    addPortfolio.mutate(data);
+    editPortfolio.mutate({ data, id });
   };
 
   return (
@@ -238,9 +248,9 @@ const AddPortfolioForm = () => {
           <Button
             type="submit"
             className="w-full"
-            disabled={addPortfolio.isPending}
+            disabled={editPortfolio.isPending}
           >
-            {addPortfolio.isPending ? "Loading..." : "Tambah Portfolio"}
+            {editPortfolio.isPending ? "Loading..." : "Ubah Portfolio"}
             <Check />
           </Button>
         </div>
@@ -249,4 +259,4 @@ const AddPortfolioForm = () => {
   );
 };
 
-export default AddPortfolioForm;
+export default EditPortfolioForm;

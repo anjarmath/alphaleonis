@@ -115,7 +115,7 @@ export const portfolioRouter = createTRPCRouter({
       return ctx.db.portfolio.update({
         where: { id: input.id },
         data: {
-          visible: portfolio.visible,
+          visible: !portfolio.visible,
         },
       });
     }),
