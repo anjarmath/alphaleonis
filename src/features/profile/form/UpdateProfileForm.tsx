@@ -44,7 +44,6 @@ const UpdateProfileForm = ({
     const file = e.target.files?.[0];
     if (file) {
       const base64 = await fileToBase64(file);
-      console.log(base64);
       form.setValue("image", base64);
     }
   };
@@ -53,7 +52,6 @@ const UpdateProfileForm = ({
     const file = e.target.files?.[0];
     if (file) {
       const base64 = await fileToBase64(file);
-      console.log(base64);
       form.setValue("resume", base64);
     }
   };

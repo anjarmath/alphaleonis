@@ -3,13 +3,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,89 +13,240 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { portfolioSchema, type PortfolioType } from "../schema";
-import type { Certificate } from "@prisma/client";
+import { portfolioSchema, TAGS, type PortfolioType } from "../schema";
+import type { Portfolio } from "@prisma/client";
 import { fileToBase64 } from "@/lib/form-util";
 import TiptapInput from "@/components/tiptap-editor";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Check, X } from "lucide-react";
+import Image from "next/image";
 
 const AddPortfolioForm = () => {
   const util = api.useUtils();
-  const [open, setOpen] = React.useState(false);
 
   const form = useForm<PortfolioType>({
     resolver: zodResolver(portfolioSchema),
     defaultValues: {
+      title: "",
+      description: "",
       brief: "",
+      url: "#",
+      githubUrl: "#",
+      image: "",
+      visible: true,
+      tag: [],
     },
   });
 
-  // const addPortfolio = api.portfolio.add.useMutation({
-  //   onError: (err) => {
-  //     toast.error(err.message);
-  //   },
-  //   onSuccess: (data) => {
-  //     util.certificate.get.setData(
-  //       undefined,
-  //       (prev: Certificate[] | undefined) => [...(prev ?? []), data],
-  //     );
-  //     setOpen(false);
-  //     toast.success("Certificate berhasil ditambahkan");
-  //   },
-  // });
+  const [preview, setPreview] = React.useState<string>();
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const base64 = await fileToBase64(file);
+      form.setValue("image", base64);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const addPortfolio = api.portfolio.add.useMutation({
+    onError: (err) => {
+      toast.error(err.message);
+    },
+    onSuccess: (data) => {
+      util.portfolio.getAll.setData(
+        undefined,
+        (prev: Portfolio[] | undefined) => [...(prev ?? []), data],
+      );
+
+      toast.success("Portfolio berhasil ditambahkan");
+    },
+  });
 
   const handleSubmit = (data: PortfolioType) => {
-    // addCertificate.mutate(data);
+    addPortfolio.mutate(data);
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(open) => {
-        setOpen(open);
-        form.reset();
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>
-          Tambahkan Portfolio <Plus />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-h-svh w-3xl overflow-auto">
-        <DialogHeader>
-          <DialogTitle>Tambahkan Portfolio</DialogTitle>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="brief"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brief</FormLabel>
-                  <FormControl>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="flex w-full flex-col gap-4 md:flex-row"
+      >
+        <div className="flex-1">
+          <FormField
+            control={form.control}
+            name="brief"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Write your brief about this portfolio</FormLabel>
+                <FormControl>
+                  <div className="tiptap-content">
                     <TiptapInput
                       value={field.value}
                       onChange={field.onChange}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex-1 space-y-4">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <Button type="submit" className="w-full" disabled={false}>
-              {false ? "Loading..." : "Tambah Certificate"}
-            </Button>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+          <FormField
+            control={form.control}
+            name="visible"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Visible?</FormLabel>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Url</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="githubUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Github Url</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {preview && (
+            <Image src={preview} alt="preview" width={100} height={100} />
+          )}
+
+          <FormField
+            control={form.control}
+            name="tag"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tag</FormLabel>
+                <div className="border-input flex min-h-9 w-full flex-wrap items-center gap-2 rounded-md border px-2 py-1">
+                  {field.value.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      onClick={() => {
+                        field.onChange(
+                          field.value.filter((item) => item !== tag),
+                        );
+                      }}
+                    >
+                      {tag}
+                      <X />
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {TAGS.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      className="cursor-pointer"
+                      variant="outline"
+                      onClick={() => {
+                        field.onChange(
+                          Array.from(new Set([...field.value, tag])),
+                        );
+                        console.log(field.value);
+                      }}
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={addPortfolio.isPending}
+          >
+            {addPortfolio.isPending ? "Loading..." : "Tambah Portfolio"}
+            <Check />
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 

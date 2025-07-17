@@ -16,11 +16,15 @@ import {
   AlignLeft,
   AlignRight,
   BoldIcon,
+  CaseSensitive,
   Code2,
   Heading1,
   Heading2,
   Heading3,
+  Heading4,
   ItalicIcon,
+  List,
+  ListOrdered,
   Radical,
   StrikethroughIcon,
   UnderlineIcon,
@@ -119,6 +123,7 @@ export default function TiptapInput({
             editor.isActive("heading", { level: 1 }) ? "heading1" : "",
             editor.isActive("heading", { level: 2 }) ? "heading2" : "",
             editor.isActive("heading", { level: 3 }) ? "heading3" : "",
+            editor.isActive("paragraph") ? "paragraph" : "",
           ]}
         >
           <ToggleGroupItem
@@ -147,6 +152,13 @@ export default function TiptapInput({
             }
           >
             <Heading3 />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="paragraph"
+            aria-label="Toggle paragraph"
+            onClick={() => editor.chain().focus().setParagraph().run()}
+          >
+            <CaseSensitive />
           </ToggleGroupItem>
         </ToggleGroup>
 
@@ -194,14 +206,28 @@ export default function TiptapInput({
           value={[]}
         >
           <ToggleGroupItem
-            value="align-left"
+            value="ordered-list"
+            aria-label="Toggle ordered list"
+            onClick={() => editor.chain().toggleOrderedList().focus().run()}
+          >
+            <ListOrdered />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="unordered-list"
+            aria-label="Toggle unordered list"
+            onClick={() => editor.chain().toggleBulletList().focus().run()}
+          >
+            <List />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="math"
             aria-label="Toggle math"
             onClick={() => editor.chain().insertContent("$x$ ").focus().run()}
           >
             <Radical />
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="align-center"
+            value="code"
             aria-label="Toggle code"
             onClick={() => editor.chain().focus().toggleCode().run()}
           >

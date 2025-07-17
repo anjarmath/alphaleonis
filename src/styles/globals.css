@@ -185,3 +185,55 @@ p.is-editor-empty:first-child::before {
     @apply bg-background text-foreground;
   }
 }
+
+/* Pastikan file ini diimport di komponen Next.js-mu */
+
+.tiptap-content {
+  @apply text-base leading-relaxed text-gray-800;
+}
+
+/* Heading Styles */
+.tiptap-content h1 {
+  @apply mt-6 mb-4 text-2xl font-bold;
+}
+
+.tiptap-content h2 {
+  @apply mt-5 mb-3 text-xl font-semibold;
+}
+
+.tiptap-content h3 {
+  @apply mt-4 mb-2 text-lg font-semibold;
+}
+
+/* Unordered List */
+.tiptap-content ul {
+  @apply mb-1 list-disc pl-9;
+}
+
+.tiptap-content ul li {
+  @apply mb-0;
+}
+
+/* Ordered List */
+.tiptap-content ol {
+  @apply mb-1 list-decimal pl-9;
+}
+
+.tiptap-content ol li {
+  @apply mb-0;
+}
+
+/* Blockquote */
+.tiptap-content blockquote {
+  @apply my-4 border-l-4 border-gray-400 pl-4 text-gray-600 italic;
+}
+
+/* Optional: Tambahan spacing antar paragraf */
+.tiptap-content p {
+  @apply mb-2;
+}
+
+/* Code and preformatted text styles */
+.tiptap-content code {
+  @apply rounded bg-gray-100 px-2 py-1 font-mono text-sm text-indigo-900;
+}
