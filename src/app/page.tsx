@@ -18,6 +18,17 @@ import {
 import type { ReactElement } from "react";
 import NavBar from "@/components/navbar";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface Tools {
   alt: string;
@@ -91,29 +102,31 @@ export default async function Home() {
       <NavBar />
 
       {/* Hero Section */}
-      <div id="home" className="bg-hprimary-dark grid min-h-screen px-4 py-16">
+      <div id="home" className="bg-sidebar grid min-h-screen px-4 py-16">
         <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-8 md:flex-row">
           <div className="flex flex-[3] flex-col gap-4">
-            <h1 className="text-4xl font-bold text-white">
-              <span className="text-hprimary-light">Congratulation!</span> 🙌,
-              you have come to the right place!
+            <h1 className="text-4xl font-bold">
+              <span className="text-primary">Congratulation!</span> 🙌, you have
+              come to the right place!
             </h1>
-            <span className="mb-5 text-lg text-white">
+            <span className="mb-5 text-lg">
               Hello, my name is
               <span className="font-bold"> Anjar Dwi Hariadi</span>.
               {me?.greeting}
             </span>
-            <Link href={"#contact"}>
-              <button className="bg-hprimary hover:bg-hprimary-light w-full rounded-lg px-6 py-4 text-white transition-colors hover:text-black md:w-auto">
-                Get Started
-              </button>
+            <Link
+              href={"#contact"}
+              className={cn(buttonVariants({ size: "lg" }), "w-fit")}
+            >
+              Get Started
+              <MoveRight />
             </Link>
             <div className="mt-4 flex gap-6">
               {myAccount.map((account, index) => (
                 <Link
                   href={account.href}
                   key={index}
-                  className="hover:text-hprimary text-white transition-colors"
+                  className="hover:text-secondary/50 text-secondary transition-colors"
                 >
                   {account.icon}
                 </Link>
@@ -122,7 +135,7 @@ export default async function Home() {
           </div>
 
           <div className="flex-[2]">
-            <div className="bg-hprimary-light absolute mx-8 my-4 rounded-t-full rounded-l-full p-3">
+            <div className="bg-primary absolute mx-8 my-4 rounded-t-full rounded-l-full p-3">
               <span className="text-5xl">{me?.mood}</span>
             </div>
             <Image
@@ -136,15 +149,16 @@ export default async function Home() {
       </div>
 
       {/* New Info Banner */}
-      <div className="bg-red-50 px-5 py-8">
+      <div className="bg-destructive/10 px-5 py-8">
         <div className="mx-auto flex max-w-5xl items-center justify-center gap-5">
           <span>
-            <b className="text-red-500">NEW:</b> Now I am on Youtube
+            <b className="text-destructive">NEW:</b> Now I am on Youtube
           </span>
-          <Link href={"https://www.youtube.com/@an.alphaleonis"}>
-            <button className="flex w-full items-center gap-2 rounded-md bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600 md:w-auto">
-              <Youtube /> Visit My Channel
-            </button>
+          <Link
+            href={"https://www.youtube.com/@an.alphaleonis"}
+            className={buttonVariants({ size: "lg", variant: "destructive" })}
+          >
+            <Youtube /> Visit My Channel
           </Link>
         </div>
       </div>
@@ -162,12 +176,17 @@ export default async function Home() {
             />
           </div>
           <div className="flex flex-[3] flex-col gap-2">
-            <span className="text-hprimary text-lg font-bold">About Me</span>
+            <span className="text-primary text-lg font-bold">About Me</span>
             <h1 className="text-4xl font-bold">{me?.descTitle}</h1>
-            <p className="mb-3 text-slate-700">{me?.descContent}</p>
+            <p className="text-muted-foreground mb-3">{me?.descContent}</p>
             <Link
               href={`${me?.resume}`}
-              className="hover:text-hprimary flex items-center gap-2 text-lg font-bold transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({ size: "lg", variant: "link" }),
+                "w-fit",
+              )}
             >
               <Download />
               Resume
@@ -196,17 +215,17 @@ export default async function Home() {
       </div>
 
       {/* Experience */}
-      <div id="experience" className="bg-slate-950 px-5 py-8">
+      <div id="experience" className="bg-sidebar px-5 py-8">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5">
-          <span className="text-hprimary text-lg font-bold">Experience</span>
+          <span className="text-primary text-lg font-bold">Experience</span>
           {experiences.map((experience, index) => (
             <div
               key={index}
-              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-white"
+              className="bg-background w-full rounded-xl px-5 py-3"
             >
               <h2 className="mb-2 font-bold">{experience.company}</h2>
               <h4 className="mb-2">{experience.title}</h4>
-              <span className="text-sm font-light text-slate-500">
+              <span className="text-muted-foreground text-sm font-light">
                 {experience.period}
               </span>
             </div>
@@ -215,53 +234,61 @@ export default async function Home() {
       </div>
 
       {/* My portfolio */}
-      <div id="portfolio" className="bg-hprimary-xlight px-5 py-8">
+      <div id="portfolio" className="bg-sidebar px-5 py-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-5">
-          <span className="text-hprimary text-lg font-bold">Portfolio</span>
+          <span className="text-primary text-lg font-bold">Portfolio</span>
           <h1 className="text-4xl font-bold">
             Enjoying every process and here’s the results
           </h1>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(384px,1fr))] gap-3 py-2">
             {portfolios.map((portfolio) => (
-              <div
+              <Card
                 key={portfolio.id}
-                className="hover:border-hprimary rounded-xl border-2 bg-white p-3 shadow-lg transition-all hover:shadow-2xl md:w-[48%]"
+                className="hover:border-primary transition-all hover:shadow-2xl"
               >
-                <Image
-                  alt={portfolio.title}
-                  src={portfolio.image ?? "/no-image.webp"}
-                  width={1200}
-                  height={800}
-                  className="aspect-video rounded-lg object-cover"
-                ></Image>
-                <h3 className="mt-4 font-bold">{portfolio.title}</h3>
-                <div className="my-2 flex flex-wrap gap-2">
-                  {portfolio.tag?.map((tag, index) => (
-                    <Badge key={index}>{tag}</Badge>
+                <CardHeader>
+                  <Image
+                    src={portfolio.image ?? "/no-image.webp"}
+                    alt={portfolio.title}
+                    width={200}
+                    height={200}
+                    className="aspect-video w-full rounded-md object-cover"
+                  />
+                  <CardTitle>{portfolio.title}</CardTitle>
+                  {portfolio.tag.map((tag, index) => (
+                    <Badge key={index} variant="secondary">
+                      {tag}
+                    </Badge>
                   ))}
-                </div>
-                <span className="my-4 text-slate-700">
-                  {portfolio.description}
-                </span>
-                <div className="my-5 flex gap-4">
-                  {portfolio.url && (
-                    <Link
-                      href={portfolio.url}
-                      className="hover:text-hprimary flex items-center gap-1 transition-all hover:underline"
-                    >
-                      <MoveRight /> Try It
-                    </Link>
-                  )}
-                  {portfolio.githubUrl && (
-                    <Link
-                      href={portfolio.githubUrl}
-                      className="hover:text-hprimary flex items-center gap-1 transition-all hover:underline"
-                    >
-                      <Github /> Github
-                    </Link>
-                  )}
-                </div>
-              </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>{portfolio.description}</CardDescription>
+                </CardContent>
+                <CardFooter className="gap-2">
+                  <Link
+                    href={portfolio.url ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({
+                      size: "sm",
+                      variant: "outline",
+                    })}
+                  >
+                    <MoveRight /> Try It
+                  </Link>
+                  <Link
+                    href={portfolio.githubUrl ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({
+                      size: "sm",
+                      variant: "outline",
+                    })}
+                  >
+                    <Github /> Github
+                  </Link>
+                </CardFooter>
+              </Card>
             ))}
           </div>
         </div>
@@ -269,18 +296,22 @@ export default async function Home() {
 
       {/* Contact Me */}
       <div id="contact" className="px-5 py-8">
-        <div className="bg-hprimary-dark mx-auto flex max-w-5xl flex-col gap-3 rounded-xl p-4">
-          <h3 className="text-hprimary-light text-lg font-bold">Contact me</h3>
+        <div className="bg-chart-5 mx-auto flex max-w-5xl flex-col gap-3 rounded-xl p-4">
+          <h3 className="text-primary text-lg font-bold">Contact me</h3>
           <h1 className="text-2xl font-bold text-white">
             Ready to get started?
           </h1>
           <p className="text-white">
             Feel free to contact me, let’s discuss about your vision!
           </p>
-          <Link href={`mailto:${me?.email}`} className="ml-auto">
-            <button className="flex w-full items-center gap-2 rounded-md bg-white px-3 py-2 md:w-auto">
-              Send Me an Email <Send />
-            </button>
+          <Link
+            href={`mailto:${me?.email}`}
+            className={cn(
+              buttonVariants({ size: "lg", variant: "secondary" }),
+              "bg-primary ml-auto text-white",
+            )}
+          >
+            Send Me an Email <Send />
           </Link>
         </div>
       </div>

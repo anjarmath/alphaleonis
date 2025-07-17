@@ -7,11 +7,6 @@
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-  --color-hprimary: #3ccf4e;
-  --color-hprimary-dark: #003600;
-  --color-hprimary-light: #9de7a6;
-  --color-hprimary-xlight: #ebfaed;
 }
 
 :root {
@@ -23,8 +18,8 @@
   --popover-foreground: oklch(0.3729 0.0306 259.7328);
   --primary: oklch(0.7227 0.192 149.5793);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.9514 0.025 236.8242);
-  --secondary-foreground: oklch(0.4461 0.0263 256.8018);
+  --secondary: oklch(73.953% 0.14219 234.066);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.967 0.0029 264.5419);
   --muted-foreground: oklch(0.551 0.0234 264.3637);
   --accent: oklch(0.9505 0.0507 163.0508);
@@ -77,8 +72,8 @@
   --popover-foreground: oklch(0.8717 0.0093 258.3382);
   --primary: oklch(0.7729 0.1535 163.2231);
   --primary-foreground: oklch(0.2077 0.0398 265.7549);
-  --secondary: oklch(0.3351 0.0331 260.912);
-  --secondary-foreground: oklch(0.7118 0.0129 286.0665);
+  --secondary: oklch(73.953% 0.14219 234.066);
+  --secondary-foreground: oklch(0.9219 0 0);
   --muted: oklch(0.2795 0.0368 260.031);
   --muted-foreground: oklch(0.551 0.0234 264.3637);
   --accent: oklch(0.3729 0.0306 259.7328);

@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Sora } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
@@ -13,10 +13,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
+const sora = Sora({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -24,13 +21,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} scroll-smooth`}
+      className={`${sora.className} scroll-smooth`}
       suppressHydrationWarning
     >
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

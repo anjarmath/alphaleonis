@@ -3,6 +3,8 @@
 import React, { useState, type Key } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { buttonVariants } from "./ui/button";
+import { ModeToggle } from "./mode-toggle";
 
 interface MenuItem {
   id: Key;
@@ -45,13 +47,13 @@ const NavBar = () => {
   }
 
   return (
-    <div className="sticky top-0 z-50 border-b bg-white px-5 py-3">
+    <div className="bg-background sticky top-0 z-50 px-5 py-3">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
         <Link href={"#"}>
-          <h1 className="text-hprimary text-2xl font-bold">Anjar.Hariadi</h1>
+          <h1 className="text-primary text-2xl font-bold">Anjar.Hariadi</h1>
         </Link>
         <div
-          className={`fixed flex h-screen w-[70%] flex-col items-center justify-center gap-4 bg-white p-4 shadow-md lg:static lg:h-fit lg:w-max lg:flex-row lg:shadow-none ${
+          className={`bg-background fixed flex h-screen w-[70%] flex-col items-center justify-center gap-4 p-4 shadow-md lg:static lg:h-fit lg:w-max lg:flex-row lg:shadow-none ${
             showDrawer ? "left-0" : "left-[-100%]"
           } top-0 transition-all`}
         >
@@ -64,12 +66,10 @@ const NavBar = () => {
               </li>
             ))}
           </ul>
-          <Link
-            href={"#contact"}
-            className="bg-hprimary hover:bg-hprimary-dark rounded-md p-3 text-white transition-colors"
-          >
+          <Link href={"#contact"} className={buttonVariants()}>
             Contact Me
           </Link>
+          <ModeToggle />
         </div>
         <button className="block p-3 lg:hidden" onClick={drawerButtonClick}>
           <Menu />
