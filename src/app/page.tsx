@@ -255,11 +255,13 @@ export default async function Home() {
                     className="aspect-video w-full rounded-md object-cover"
                   />
                   <CardTitle>{portfolio.title}</CardTitle>
-                  {portfolio.tag.map((tag, index) => (
-                    <Badge key={index} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
+                  <div className="flex flex-wrap gap-2">
+                    {portfolio.tag.map((tag, index) => (
+                      <Badge key={index} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{portfolio.description}</CardDescription>
