@@ -7,6 +7,11 @@
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-hprimary: #3ccf4e;
+  --color-hprimary-dark: #003600;
+  --color-hprimary-light: #9de7a6;
+  --color-hprimary-xlight: #ebfaed;
 }
 
 :root {
