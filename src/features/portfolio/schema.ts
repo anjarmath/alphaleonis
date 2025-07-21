@@ -11,6 +11,7 @@ export const TAGS = [
   "Postgresql",
   "Docker",
   "Leadership",
+  "AWS"
 ];
 
 export const portfolioSchema = z.object({
