@@ -42,7 +42,6 @@ const EditPortfolioForm = ({
       brief: defaultValues.brief ?? "",
       url: defaultValues.url ?? "#",
       githubUrl: defaultValues.githubUrl ?? "#",
-      image: "",
       visible: defaultValues.visible ?? true,
       tag: defaultValues.tag ?? [],
     },

@@ -36,7 +36,6 @@ const AddPortfolioForm = () => {
       brief: "",
       url: "#",
       githubUrl: "#",
-      image: "",
       visible: true,
       tag: [],
     },

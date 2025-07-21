@@ -20,7 +20,7 @@ export const portfolioSchema = z.object({
   brief: z.string().min(1),
   url: z.string().optional(),
   githubUrl: z.string().optional(),
-  image: z.string().min(1),
+  image: z.string().min(1).optional(),
   tag: z.array(z.string()).min(1, { message: "Pilih minimal satu tag" }),
   visible: z.boolean(),
 });
