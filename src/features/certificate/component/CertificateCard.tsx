@@ -47,8 +47,8 @@ const CertificateCard = ({ certificate }: { certificate: Certificate }) => {
         <Image
           src={certificate.image}
           alt={certificate.title}
-          width={200}
-          height={200}
+          width={500}
+          height={500}
           className="aspect-[1.414/1] w-full rounded-md object-cover"
         />
         <CardTitle>{certificate.title}</CardTitle>

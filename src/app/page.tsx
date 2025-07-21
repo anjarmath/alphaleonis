@@ -250,8 +250,8 @@ export default async function Home() {
                   <Image
                     src={portfolio.image ?? "/no-image.webp"}
                     alt={portfolio.title}
-                    width={200}
-                    height={200}
+                    width={500}
+                    height={500}
                     className="aspect-video w-full rounded-md object-cover"
                   />
                   <CardTitle>{portfolio.title}</CardTitle>
