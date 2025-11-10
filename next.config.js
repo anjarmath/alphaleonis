@@ -13,12 +13,16 @@ const config = {
         pathname: "/storage/v1/**",
         hostname: "*.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+      },
     ],
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: "standalone",
+  // output: "standalone",
 };
 
 export default config;
