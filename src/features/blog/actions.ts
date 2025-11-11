@@ -12,7 +12,10 @@ import { console } from "inspector";
 export const getAllPostCached = cache(getAllPost);
 export const getBlogPostCached = cache(getBlogPost);
 
-export async function getAllPost(start_cursor: string | undefined) {
+export async function getAllPost(
+  pagination: boolean,
+  start_cursor: string | undefined,
+) {
   try {
     const response = await notion.dataSources.query({
       data_source_id: env.NOTION_BLOG_DATASOURCE_ID,
@@ -22,7 +25,7 @@ export async function getAllPost(start_cursor: string | undefined) {
       //     equals: true,
       //   },
       // },
-      page_size: 20,
+      page_size: pagination ? 10 : undefined,
       start_cursor: start_cursor,
       sorts: [
         {

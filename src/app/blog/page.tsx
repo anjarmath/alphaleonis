@@ -18,7 +18,7 @@ const BlogListPage = () => {
   useEffect(() => {
     const fetchInitial = async () => {
       setIsLoading(true);
-      await getAllPost(undefined)
+      await getAllPost(true, undefined)
         .then((res) => {
           if (res.blogs) {
             setBlogs(res.blogs);
@@ -37,7 +37,7 @@ const BlogListPage = () => {
   const handleLoadMore = async () => {
     if (!nextCursor) return;
     setIsLoading(true);
-    await getAllPost(nextCursor)
+    await getAllPost(true, nextCursor)
       .then((res) => {
         if (res.blogs) {
           setBlogs([...blogs, ...res.blogs]);
