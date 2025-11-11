@@ -40,6 +40,12 @@ export async function generateMetadata(
   };
 }
 
+export const revalidate = 60 * 60 * 3;
+
+export function generateStaticParams() {
+  return [];
+}
+
 const BlogPostPage = async ({ params }: Props) => {
   const { slug } = await params;
   const content = await getBlogPostCached(slug);
