@@ -19,12 +19,12 @@ export async function getAllPost(
   try {
     const response = await notion.dataSources.query({
       data_source_id: env.NOTION_BLOG_DATASOURCE_ID,
-      // filter: {
-      //   property: "Published",
-      //   checkbox: {
-      //     equals: true,
-      //   },
-      // },
+      filter: {
+        property: "Published",
+        checkbox: {
+          equals: true,
+        },
+      },
       page_size: pagination ? 10 : undefined,
       start_cursor: start_cursor,
       sorts: [
