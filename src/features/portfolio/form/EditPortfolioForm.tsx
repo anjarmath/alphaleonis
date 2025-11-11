@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, X } from "lucide-react";
 import Image from "next/image";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const EditPortfolioForm = ({
   id,
@@ -72,6 +73,8 @@ const EditPortfolioForm = ({
       );
 
       toast.success("Portfolio berhasil ditambahkan");
+
+      revalidateLandingPage();
     },
   });
 

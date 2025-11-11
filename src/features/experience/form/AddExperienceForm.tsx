@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { experienceSchema, type ExperienceSchematype } from "../schema";
 import { Textarea } from "@/components/ui/textarea";
 import type { Experience } from "@prisma/client";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const AddExperienceForm = () => {
   const util = api.useUtils();
@@ -53,6 +54,8 @@ const AddExperienceForm = () => {
       );
       setOpen(false);
       toast.success("Experience berhasil ditambahkan");
+
+      revalidateLandingPage();
     },
   });
 

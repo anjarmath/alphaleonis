@@ -1,11 +1,16 @@
 "use server";
 
+import { cache } from "react";
 import { unstable_noStore as noStore } from "next/cache";
 import type { BlogPost, BlogPostContent } from "./dto";
 import { extractPageId, type NotionClientError } from "@notionhq/client";
 import { notion } from "@/lib/notion/server";
 import { extractNotionPage } from "./utils";
 import { env } from "@/env";
+import { console } from "inspector";
+
+export const getAllPostCached = cache(getAllPost);
+export const getBlogPostCached = cache(getBlogPost);
 
 export async function getAllPost(start_cursor: string | undefined) {
   try {
@@ -45,7 +50,6 @@ export async function getAllPost(start_cursor: string | undefined) {
 export async function getBlogPost(
   slug: string,
 ): Promise<BlogPostContent | null> {
-  noStore();
   const pageId = extractPageId(slug);
 
   if (!pageId) return null;

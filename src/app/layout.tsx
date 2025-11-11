@@ -1,16 +1,22 @@
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist, Sora } from "next/font/google";
+import { Sora } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "AnjarHariadi",
+  title: "Anjar Dwi Hariadi",
   description: "Software Developer",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  twitter: {
+    card: "summary_large_image",
+  },
+  openGraph: {
+    images: "/opengraph-image.png",
+  },
 };
 
 const sora = Sora({ subsets: ["latin"] });

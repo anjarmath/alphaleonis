@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { addCertificateSchema, type AddCertificateSchemaType } from "../schema";
 import type { Certificate } from "@prisma/client";
 import { fileToBase64 } from "@/lib/form-util";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const AddCertificateForm = () => {
   const util = api.useUtils();
@@ -61,6 +62,8 @@ const AddCertificateForm = () => {
       );
       setOpen(false);
       toast.success("Certificate berhasil ditambahkan");
+
+      revalidateLandingPage();
     },
   });
 

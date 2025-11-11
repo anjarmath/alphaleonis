@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Image from "next/image";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const UpdateProfileForm = ({
   defaultValues,
@@ -59,6 +60,7 @@ const UpdateProfileForm = ({
   const updateProfile = api.profile.update.useMutation({
     onSuccess: () => {
       toast.success("Profile updated");
+      revalidateLandingPage();
     },
     onError: (err) => {
       toast.error(err.message);

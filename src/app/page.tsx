@@ -11,9 +11,9 @@ import {
   Youtube,
 } from "lucide-react";
 import {
-  getExperiences,
-  getPortfolios,
-  getProfile,
+  getExperiencesCached,
+  getPortfoliosCached,
+  getProfileCached,
 } from "@/features/landing/actions";
 import type { ReactElement } from "react";
 import NavBar from "@/components/navbar";
@@ -22,7 +22,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -42,9 +41,9 @@ interface Account {
 
 export default async function Home() {
   const [me, portfolios, experiences] = await Promise.all([
-    getProfile(),
-    getPortfolios(),
-    getExperiences(),
+    getProfileCached(),
+    getPortfoliosCached(),
+    getExperiencesCached(),
   ]);
 
   const myAccount: Account[] = [

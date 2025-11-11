@@ -29,6 +29,7 @@ import {
 } from "../schema";
 import type { Certificate } from "@prisma/client";
 import { fileToBase64 } from "@/lib/form-util";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const EditCertificateForm = ({
   id,
@@ -72,6 +73,8 @@ const EditCertificateForm = ({
       );
       setOpen(false);
       toast.success("Certificate berhasil ditambahkan");
+
+      revalidateLandingPage();
     },
   });
 

@@ -2,6 +2,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { revalidateLandingPage } from "@/features/landing/actions";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import React, { startTransition } from "react";
@@ -24,6 +25,7 @@ const TogglePortfolioVisibility = ({
     onSuccess: () => {
       toast.success("Visibility Updated");
       setS(!isVisible);
+      revalidateLandingPage();
     },
     onError: (err) => {
       toast.error(err.message);

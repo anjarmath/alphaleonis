@@ -1,17 +1,48 @@
-import { getBlogPost } from "@/features/blog/actions";
+import { getBlogPostCached } from "@/features/blog/actions";
 import { notFound } from "next/navigation";
 import React from "react";
 import { renderBlocks } from "@/components/notion/render-blocks";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import type { Metadata, ResolvingMetadata } from "next";
 
-const BlogPostPage = async ({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) => {
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const { slug } = await params;
-  const content = await getBlogPost(slug);
+  const content = await getBlogPostCached(slug);
+  // optionally access and extend (rather than replace) parent metadata
+  const parentMetadata = await parent;
+  const previousImages = parentMetadata.openGraph?.images || [];
+
+  if (!content)
+    return {
+      title: parentMetadata.title,
+      description: parentMetadata.description,
+    };
+  return {
+    title: content.post?.title,
+    description: content.post?.title,
+    openGraph: {
+      images: content.post?.cover
+        ? [
+            {
+              url: content.post?.cover,
+            },
+          ]
+        : previousImages,
+    },
+  };
+}
+
+const BlogPostPage = async ({ params }: Props) => {
+  const { slug } = await params;
+  const content = await getBlogPostCached(slug);
   if (!content) return notFound();
   if (!content.success)
     return (

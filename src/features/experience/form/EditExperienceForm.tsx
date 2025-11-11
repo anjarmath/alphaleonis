@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { experienceSchema, type ExperienceSchematype } from "../schema";
 import { Textarea } from "@/components/ui/textarea";
 import type { Experience } from "@prisma/client";
+import { revalidateLandingPage } from "@/features/landing/actions";
 
 const EditExperienceForm = ({
   id,
@@ -62,6 +63,8 @@ const EditExperienceForm = ({
       );
       setOpen(false);
       toast.success("Experience berhasil diperbarui");
+
+      revalidateLandingPage();
     },
   });
 
