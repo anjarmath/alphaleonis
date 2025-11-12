@@ -34,7 +34,14 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const excludedPaths = ["/login", "/auth", "/api/trpc", "/blog"];
+  const excludedPaths = [
+    "/login",
+    "/auth",
+    "/api/trpc",
+    "/blog",
+    "/sitemap",
+    "/robots",
+  ];
 
   if (
     !user &&
