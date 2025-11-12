@@ -32,11 +32,13 @@ import {
 interface Tools {
   alt: string;
   image: string;
+  ariaLabel?: string;
 }
 
 interface Account {
   icon: ReactElement<LucideIcon>;
   href: string;
+  ariaLabel?: string;
 }
 
 export default async function Home() {
@@ -50,33 +52,40 @@ export default async function Home() {
     {
       icon: <Github />,
       href: "https://github.com/anjarmath",
+      ariaLabel: "Anjar's Github",
     },
     {
       icon: <Linkedin />,
       href: "https://www.linkedin.com/in/anjar2hariadi/",
+      ariaLabel: "Anjar's Linkedin",
     },
     {
       icon: <Mail />,
       href: `mailto:creative.anjar@gmail.com`,
+      ariaLabel: "Anjar's Email",
     },
     {
       icon: <Youtube />,
       href: "https://www.youtube.com/@an.alphaleonis",
+      ariaLabel: "Anjar's Youtube",
     },
   ];
 
   const myTool: Tools[] = [
     {
-      alt: "Flutter",
-      image: "mytools/flutter.svg",
-    },
-    {
       alt: "Go Lang",
       image: "mytools/go.svg",
+      ariaLabel: "Go Lang as tool",
     },
     {
       alt: "React JS",
       image: "mytools/react.svg",
+      ariaLabel: "React JS as tool",
+    },
+    {
+      alt: "Flutter",
+      image: "mytools/flutter.svg",
+      ariaLabel: "Flutter as tool",
     },
     // {
     //   alt: "Next JS",
@@ -85,6 +94,7 @@ export default async function Home() {
     {
       alt: "Vue JS",
       image: "mytools/vue.svg",
+      ariaLabel: "Vue JS as tool",
     },
     // {
     //   alt: "Nuxt JS",
@@ -93,6 +103,7 @@ export default async function Home() {
     {
       alt: "Figma",
       image: "mytools/figma.svg",
+      ariaLabel: "Figma as tool",
     },
   ];
 
@@ -124,6 +135,7 @@ export default async function Home() {
               {myAccount.map((account, index) => (
                 <Link
                   href={account.href}
+                  aria-label={account.ariaLabel}
                   key={index}
                   className="hover:text-secondary/50 text-secondary transition-colors"
                 >
@@ -140,9 +152,10 @@ export default async function Home() {
             <Image
               width={3000}
               height={3000}
-              alt="anjar"
+              alt="anjar dwi hariadi"
+              priority
               src={"/hero-image.png"}
-            ></Image>
+            />
           </div>
         </div>
       </div>
@@ -203,6 +216,7 @@ export default async function Home() {
               <Image
                 width={200}
                 height={200}
+                priority
                 key={index}
                 alt={tool.alt}
                 src={tool.image}
@@ -216,7 +230,7 @@ export default async function Home() {
       {/* Experience */}
       <div id="experience" className="bg-sidebar px-5 py-8">
         <div className="mx-auto flex max-w-2xl flex-col items-center gap-5">
-          <span className="text-primary text-lg font-bold">Experience</span>
+          <h1 className="text-primary text-lg font-bold">Experience</h1>
           {experiences.map((experience, index) => (
             <div
               key={index}
@@ -298,7 +312,7 @@ export default async function Home() {
       {/* Contact Me */}
       <div id="contact" className="px-5 py-8">
         <div className="bg-chart-5 mx-auto flex max-w-5xl flex-col gap-3 rounded-xl p-4">
-          <h3 className="text-primary text-lg font-bold">Contact me</h3>
+          <span className="text-primary text-lg font-bold">Contact me</span>
           <h1 className="text-2xl font-bold text-white">
             Ready to get started?
           </h1>

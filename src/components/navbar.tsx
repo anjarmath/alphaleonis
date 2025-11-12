@@ -55,7 +55,7 @@ const NavBar = ({ className }: { className?: string }) => {
           className,
         )}
       >
-        <Link href={"#"}>
+        <Link href={"/"}>
           <h1 className="text-primary text-2xl font-bold">Anjar.Hariadi</h1>
         </Link>
         <div
@@ -77,7 +77,11 @@ const NavBar = ({ className }: { className?: string }) => {
           </Link>
           <ModeToggle />
         </div>
-        <button className="block p-3 lg:hidden" onClick={drawerButtonClick}>
+        <button
+          aria-label={showDrawer ? "Tutup menu navigasi" : "Buka menu navigasi"}
+          className="block p-3 lg:hidden"
+          onClick={drawerButtonClick}
+        >
           <Menu />
         </button>
       </div>
