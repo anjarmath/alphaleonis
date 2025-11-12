@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/server/db";
-import { revalidatePath, unstable_cache } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 
 export const getProfileCached = unstable_cache(getProfile, ["profile"], {
   // revalidate: 3600,
@@ -36,10 +36,10 @@ export const getCertificatesCached = unstable_cache(
 );
 
 export const revalidateLandingPage = async () => {
-  // revalidateTag("profile");
-  // revalidateTag("portfolios");
-  // revalidateTag("experiences");
-  // revalidateTag("certificates");
+  revalidateTag("profile");
+  revalidateTag("portfolios");
+  revalidateTag("experiences");
+  revalidateTag("certificates");
   revalidatePath("/");
 };
 
