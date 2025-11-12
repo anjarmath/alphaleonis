@@ -3,9 +3,26 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  const excludedPaths = [
+    "/login",
+    "/auth",
+    "/api/trpc",
+    "/blog",
+    "/sitemap",
+    "/robots",
+  ];
+
   let supabaseResponse = NextResponse.next({
     request,
   });
+
+  const isExcludedPath =
+    excludedPaths.some((path) => request.nextUrl.pathname.startsWith(path)) ||
+    request.nextUrl.pathname === "/";
+
+  if (isExcludedPath) {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
@@ -34,20 +51,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const excludedPaths = [
-    "/login",
-    "/auth",
-    "/api/trpc",
-    "/blog",
-    "/sitemap",
-    "/robots",
-  ];
-
-  if (
-    !user &&
-    request.nextUrl.pathname !== "/" &&
-    !excludedPaths.some((path) => request.nextUrl.pathname.startsWith(path))
-  ) {
+  if (!user && !isExcludedPath) {
     // no user, respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";
