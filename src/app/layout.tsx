@@ -8,14 +8,24 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Anjar Dwi Hariadi",
-  description: "Software Developer",
+  title: {
+    default: "Anjar Hariadi – Software Engineer",
+    template: "%s | Anjar Hariadi",
+  },
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  description: "Personal website for my portfolios and blog.",
+  openGraph: {
+    title: "Anjar Hariadi – Software Engineer",
+    description: "Personal website for my portfolios and blog.",
+    images: "/opengraph-image.png",
+    siteName: "Anjar Hariadi",
+    locale: "id_ID",
+    type: "website",
+  },
   twitter: {
     card: "summary_large_image",
-  },
-  openGraph: {
-    images: "/opengraph-image.png",
+    title: "Anjar Hariadi – Software Engineer",
+    description: "Personal website for my portfolios and blog.",
   },
 };
 
