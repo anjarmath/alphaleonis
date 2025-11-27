@@ -1,4 +1,5 @@
 import NavBar from "@/components/navbar";
+import { cn } from "@/lib/utils";
 
 export default function BlogLayout({
   children,
@@ -6,7 +7,7 @@ export default function BlogLayout({
   return (
     <main>
       <NavBar className="max-w-3xl" />
-      <div className="min-h-screen w-full px-4 py-16">
+      <div className={cn("min-h-screen w-full px-4 py-16")}>
         <div className="mx-auto w-full max-w-3xl">{children}</div>
       </div>
       {/* Footer */}

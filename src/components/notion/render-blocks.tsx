@@ -1,4 +1,5 @@
 import { renderKatexFromHtml } from "@/lib/katex-util";
+import { cn } from "@/lib/utils";
 import type {
   BlockObjectResponse,
   PartialBlockObjectResponse,
@@ -117,14 +118,38 @@ export function renderBlocks({
 
       case "text": {
         // for rich_text recursion
-        return <span key={key}>{(block as any).plain_text}</span>;
+        return (
+          <span
+            key={key}
+            className={cn(
+              (block as any).annotations.italic && "italic",
+              (block as any).annotations.underline && "underline",
+              (block as any).annotations.strikethrough && "line-through",
+              (block as any).annotations.bold && "font-bold",
+            )}
+          >
+            {(block as any).plain_text}
+          </span>
+        );
       }
 
       case "heading_1": {
         const text = (block as Heading1BlockObjectResponse).heading_1.rich_text;
         return (
           <h1 key={key} className="text-2xl font-bold">
-            {text.map((rt) => rt.plain_text).join("")}
+            {text.map((rt, index) => (
+              <span
+                key={key + "-rt-" + index}
+                className={cn(
+                  rt.annotations.italic && "italic",
+                  rt.annotations.underline && "underline",
+                  rt.annotations.strikethrough && "line-through",
+                  rt.annotations.bold && "font-bold",
+                )}
+              >
+                {rt.plain_text}
+              </span>
+            ))}
           </h1>
         );
       }
@@ -133,7 +158,19 @@ export function renderBlocks({
         const text = (block as Heading2BlockObjectResponse).heading_2.rich_text;
         return (
           <h2 key={key} className="text-xl font-semibold">
-            {text.map((rt) => rt.plain_text).join("")}
+            {text.map((rt, index) => (
+              <span
+                key={key + "-rt-" + index}
+                className={cn(
+                  rt.annotations.italic && "italic",
+                  rt.annotations.underline && "underline",
+                  rt.annotations.strikethrough && "line-through",
+                  rt.annotations.bold && "font-bold",
+                )}
+              >
+                {rt.plain_text}
+              </span>
+            ))}
           </h2>
         );
       }
@@ -191,7 +228,17 @@ export function renderBlocks({
         const html = renderKatexFromHtml(
           fromRichText ? `$${expr}$` : `$$${expr}$$`,
         );
-        return <span key={key} dangerouslySetInnerHTML={{ __html: html }} />;
+        return fromRichText ? (
+          <span key={key} dangerouslySetInnerHTML={{ __html: html }} />
+        ) : (
+          <div key={key} className="w-full overflow-x-auto">
+            <span dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
+        );
+      }
+
+      case "divider": {
+        return <hr key={key} />;
       }
 
       default:

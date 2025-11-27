@@ -5,6 +5,7 @@ import { renderBlocks } from "@/components/notion/render-blocks";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import type { Metadata, ResolvingMetadata } from "next";
+import ShareButton from "@/components/share-button";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -73,15 +74,19 @@ const BlogPostPage = async ({ params }: Props) => {
         <h1 className="text-primary text-2xl font-bold">
           {content.post?.title}
         </h1>
-        <p className="text-secondary text-sm">
-          By {content.post?.author} • {content.post?.publishedDate}
-        </p>
+        <Separator />
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-secondary text-sm">
+            By {content.post?.author} • {content.post?.publishedDate}
+          </p>
+          <ShareButton />
+        </div>
       </div>
 
       <Separator className="my-5" />
 
       {/* Content */}
-      <div className="space-y-4">
+      <div className="w-full space-y-4">
         {renderBlocks({ blocks: content.content })}
       </div>
     </>

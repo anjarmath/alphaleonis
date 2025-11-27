@@ -67,7 +67,6 @@ export async function getBlogPost(
       success: true,
     };
   } catch (error) {
-    console.error(error);
     return {
       post: null,
       content: [],
