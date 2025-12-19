@@ -19,9 +19,6 @@ const config = {
       },
     ],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // output: "standalone",
 };
 

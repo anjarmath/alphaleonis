@@ -36,10 +36,10 @@ export const getCertificatesCached = unstable_cache(
 );
 
 export const revalidateLandingPage = async () => {
-  revalidateTag("profile");
-  revalidateTag("portfolios");
-  revalidateTag("experiences");
-  revalidateTag("certificates");
+  revalidateTag("profile", "max");
+  revalidateTag("portfolios", "max");
+  revalidateTag("experiences", "max");
+  revalidateTag("certificates", "max");
   revalidatePath("/");
 };
 
